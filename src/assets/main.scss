@@ -1,0 +1,12 @@
+@import './base.css';
+
+#app {
+  margin: 0 auto;
+  font-weight: normal;
+}
+
+.ai-bank-layout {
+  .ai-bank-main-content {
+    height: calc(100vh - 60px);
+  }
+}
