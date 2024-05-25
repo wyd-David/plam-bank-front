@@ -8,6 +8,7 @@ import TransferView from '@/views/Transfer/TransferView.vue'
 import ReportView from '@/views/Report/ReportView.vue'
 import CommunityView from '@/views/Community/CommunityView.vue'
 import SearchView from '@/views/Search/SearchView.vue'
+import SseView from '@/views/Sse/SseView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -67,6 +68,11 @@ const router = createRouter({
       path: '/search',
       name: 'Search',
       component: SearchView
+    },
+    {
+      path: '/sse',
+      name: 'SSE',
+      component: SseView
     }
   ]
 })
