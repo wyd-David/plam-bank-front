@@ -2,10 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CommonResponse_ = {
-    code?: number;
-    data?: any;
-    msg?: string;
-    success?: boolean;
+export type SseEmitter = {
+    timeout?: number;
 };
 
