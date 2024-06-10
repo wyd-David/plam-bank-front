@@ -2,9 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type CommonResponse_ = {
+import type { SseEmitter } from './SseEmitter';
+export type CommonResponse_SseEmitter_ = {
     code?: number;
-    data?: any;
+    data?: SseEmitter;
     msg?: string;
     success?: boolean;
 };
