@@ -49,8 +49,8 @@
         eventSourceRef.value = new EventSource('/palm/bank/ai/conversation/connect', { withCredentials: true});
 
         // 开启
-        eventSourceRef.value.onopen = (ev) => {
-            console.log(ev, '连接成功')
+        eventSourceRef.value.onopen = (event: any) => {
+            console.log('连接成功')
         }
                 
         // 更新
@@ -67,13 +67,13 @@
         };
 
         // 关闭
-        eventSourceRef.value.onclose = (ev) => {
-            console.log(ev, 'close');
+        eventSourceRef.value.onclose = (event: any) => {
+            console.log('close');
         };
 
         // 错误
-        eventSourceRef.value.onerror = (ev) => {
-            console.log(ev, 'error');
+        eventSourceRef.value.onerror = (event: any) => {
+            console.log('error');
         };
     }
 
