@@ -16,7 +16,7 @@
                     <el-menu-item index="community">移动生活社区</el-menu-item>
                     <el-menu-item index="transfer">转账系统</el-menu-item>
                     <el-menu-item index="report">报表系统</el-menu-item>
-                    <el-menu-item index="marketing">项目平台</el-menu-item>
+                    <el-menu-item index="project">项目平台</el-menu-item>
                 </el-menu>
             </div>
             <el-input
