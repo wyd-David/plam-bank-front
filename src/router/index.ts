@@ -70,8 +70,8 @@ const router = createRouter({
       component: SearchView
     },
     {
-      path: '/sse',
-      name: 'SSE',
+      path: '/project',
+      name: 'project',
       component: SseView
     }
   ]

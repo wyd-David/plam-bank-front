@@ -3,14 +3,12 @@
         <div class="communicate-content-box">
             <div v-for="(communicate, index) in communicateList" :key="index" :class="`communicate-item ${communicate.type === 'user' ? 'my-question' : ''}`">
                 <div></div>
-                <div :class="`communicate-content`">
-                    {{ communicate.message }}
-                </div>
+                <div :class="`communicate-content`" v-html="communicate.mdMessage || communicate.message"></div>
                 <div></div>
             </div>
         </div>
         <div class="communicate-publisher">
-            <el-input v-model="question" size="large" style="width: 100%">
+            <el-input v-model="question" size="large" style="width: 100%" @keydown.enter="sendMsg">
                 <template #suffix>
                     <el-button style="margin-right: 12px;" type="primary" @click="sendMsg">
                         发送
@@ -26,6 +24,9 @@
     import { onMounted, ref, onUnmounted } from 'vue';
     import { Top } from '@element-plus/icons-vue';
     import { AiService } from '@/api/services/AiService';
+    // @ts-ignore
+    import mkKatex from 'markdown-it-katex'; 
+    import MarkdownIt from 'markdown-it';
 
     const eventSourceRef = ref<any>();
     const communicateList = ref<any[]>([]);
@@ -35,7 +36,8 @@
         initSseEvent();
         communicateList.value.push({
             type: 'ai',
-            message: '您好，我是银行AI对话助手，有问题可以问我哦~'
+            message: '您好，我是银行AI对话助手，有问题可以问我哦~',
+            mdMessage: ''
         })
     });
 
@@ -63,6 +65,7 @@
             const contentDetail = dataJson.choices[0];
             if (!contentDetail.finish_reason) {
                 communicateList.value[communicateList.value.length - 1].message += contentDetail.delta.content;
+                communicateList.value[communicateList.value.length - 1].mdMessage = markdownToHtml(communicateList.value[communicateList.value.length - 1].message)
             }
         };
 
@@ -91,9 +94,17 @@
             question.value = '';
             communicateList.value.push({
                 type: 'ai',
-                message: ''
+                message: '',
+                mdMessage: ''
             });
         }
+    }
+
+    const markdownToHtml = (content: string) => {
+        const md = new MarkdownIt();
+        md.use(mkKatex);
+        let result = md.render(content);
+        return result;
     }
 
 </script>
@@ -118,6 +129,12 @@
                 background-color: rgb(247, 247, 247);
                 border-radius: 8px;
                 color: #1A202C;
+                strong {
+                    font-weight: bold;
+                }
+                li::marker {
+                    line-height: 18px;
+                }
             }
         }
         .my-question {
@@ -138,6 +155,24 @@
         :deep(.el-input--large .el-input__wrapper) {
             padding: 10px 15px;
             border-radius: 12px;
+        }
+    }
+}
+</style>
+<style lang="scss">
+.communicate-item {
+    .communicate-content {
+        p {
+            margin-bottom: 10px
+        }
+        strong {
+            font-weight: bold;
+        }
+        ol {
+            margin: 8px 0;
+            li {
+                margin-bottom: 4px
+            }
         }
     }
 }
