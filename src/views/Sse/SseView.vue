@@ -1,25 +1,18 @@
 <template>
     <section class="ai-bank-sse-page">
         <div class="communicate-content-box">
-            <div class="communicate-item">
+            <div v-for="(communicate, index) in communicateList" :key="index" :class="`communicate-item ${communicate.type === 'user' ? 'my-question' : ''}`">
                 <div></div>
-                <div class="communicate-content">
-                    对话内容
-                </div>
-                <div></div>
-            </div>
-            <div class="communicate-item my-question">
-                <div></div>
-                <div class="communicate-content">
-                    提问
+                <div :class="`communicate-content`">
+                    {{ communicate.message }}
                 </div>
                 <div></div>
             </div>
         </div>
         <div class="communicate-publisher">
-            <el-input size="large" style="width: 100%">
+            <el-input v-model="question" size="large" style="width: 100%">
                 <template #suffix>
-                    <el-button style="margin-right: 12px;" type="primary">
+                    <el-button style="margin-right: 12px;" type="primary" @click="sendMsg">
                         发送
                         <el-icon><Top /></el-icon>
                     </el-button>
@@ -30,44 +23,77 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue';
+    import { onMounted, ref, onUnmounted } from 'vue';
     import { Top } from '@element-plus/icons-vue';
-    import { fetchEventSource } from "@microsoft/fetch-event-source";
+    import { AiService } from '@/api/services/AiService';
 
     const eventSourceRef = ref<any>();
+    const communicateList = ref<any[]>([]);
+    const question = ref<string>('');
 
     onMounted(() => {
         initSseEvent();
+        communicateList.value.push({
+            type: 'ai',
+            message: '您好，我是银行AI对话助手，有问题可以问我哦~'
+        })
+    });
+
+    onUnmounted(() => {
+        eventSourceRef.value.close();
     })
 
     const initSseEvent = () => {
-        const url = 'http://47.96.145.135:8080/palm/bank/ai/conversation/connect';
 
-        fetchEventSource(
-            url,
-            {
+        //  建立SSE连接
+        eventSourceRef.value = new EventSource('/palm/bank/ai/conversation/connect', { withCredentials: true});
+
+        // 开启
+        eventSourceRef.value.onopen = (ev) => {
+            console.log(ev, '连接成功')
+        }
                 
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({}),
-                onmessage(event: any) {
-                    let data: any;
-                    try {
-                        data = JSON.parse(event.data);
-                    } catch {
-                        console.error("onmessage error");
-                    }
-                },
-                onerror(error) {
-                    console.log(error);
-                },
-                async onopen(response) {
-                    console.log(response, 'response')
-                }
+        // 更新
+        eventSourceRef.value.onmessage = (event: any) => {
+            const { data } = event;
+            if (data === '[DONE]') {
+                return;
             }
-        )
+            const dataJson = JSON.parse(data);
+            const contentDetail = dataJson.choices[0];
+            if (!contentDetail.finish_reason) {
+                communicateList.value[communicateList.value.length - 1].message += contentDetail.delta.content;
+            }
+        };
+
+        // 关闭
+        eventSourceRef.value.onclose = (ev) => {
+            console.log(ev, 'close');
+        };
+
+        // 错误
+        eventSourceRef.value.onerror = (ev) => {
+            console.log(ev, 'error');
+        };
+    }
+
+    const sendMsg = async () => {
+        const msg = [{
+            content: question.value,
+            role: 'user'
+        }]
+        communicateList.value.push({
+            type: 'user',
+            message: question.value
+        })
+        let res = await AiService.sendMessageUsingPost(msg);
+        if (res.code === 0) {
+            question.value = '';
+            communicateList.value.push({
+                type: 'ai',
+                message: ''
+            });
+        }
     }
 
 </script>
