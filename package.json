@@ -11,7 +11,8 @@
     "type-check": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "create-api": "openapi --input http://47.96.145.135:8080/palm/bank/v2/api-docs --output ./src/api --client axios"
+    "create-api": "openapi --input http://47.96.145.135:8080/palm/bank/v2/api-docs --output ./src/api --client axios",
+    "server": "http-server -p 5173  dist --proxy http://47.96.145.135:8080/"
   },
   "dependencies": {
     "@microsoft/fetch-event-source": "^2.0.1",
