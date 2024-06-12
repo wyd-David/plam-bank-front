@@ -120,6 +120,8 @@
         width: 856px;
         margin: auto;
         max-width: calc(100% - 48px);
+        max-height: calc(100% - 60px);
+        overflow: auto;
         .communicate-item {
             display: flex;
             margin-bottom: 8px;
@@ -173,6 +175,9 @@
             li {
                 margin-bottom: 4px
             }
+        }
+        pre > code {
+            white-space: pre-wrap;
         }
     }
 }
