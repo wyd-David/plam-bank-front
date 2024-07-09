@@ -1,10 +1,5 @@
 **银行科技岗必备后端项目：掌上AI银行项目（保姆级、持续更新）**
 
-https://t.zsxq.com/onfXM， 这个星球是没有优惠
-最近给大家有需要59优惠券，https://t.zsxq.com/rrOTW
-
-![](images/image-8.png)
-
 体验阅读链接：[ 薯条哥银行科技岗](https://qq5jbkqzduo.feishu.cn/wiki/FA4gwhMGqiVS4wko702cNc1Mnkf?from=from_copylink)
 
 ### 前端项目运行
