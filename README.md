@@ -1,6 +1,6 @@
 **银行科技岗必备后端项目：掌上AI银行项目（保姆级、持续更新）**
 
-体验阅读链接：[ 薯条哥银行科技岗](https://qq5jbkqzduo.feishu.cn/wiki/FA4gwhMGqiVS4wko702cNc1Mnkf?from=from_copylink)
+体验阅读链接：[银行科技岗](https://qq5jbkqzduo.feishu.cn/wiki/FA4gwhMGqiVS4wko702cNc1Mnkf?from=from_copylink)
 
 ### 前端项目运行
 
